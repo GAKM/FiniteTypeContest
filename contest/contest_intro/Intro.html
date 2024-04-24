@@ -1,0 +1,23 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+<p><strong>About the experiment</strong><br><br>In this experiment, you and other participants will be competing in a contest&nbsp;to win monetary prizes by submitting costly bids.&nbsp;<br>Each participant's <strong>final payout</strong> will be<br>&nbsp;</p>
+<p style="margin-left:350px;"><strong>Endowment - Bidding cost + Prize won.</strong><br>&nbsp;</p>
+<p style="margin-left:0px;">The endowment, bidding costs, and prizes will be denominated in tokens, and you will be paid&nbsp;<strong>1 US dollar for every 50 tokens</strong> in your final payout. So if your final payout is 225 tokens, you will be paid 4.5 US dollars.</p>
+<p style="margin-left:0px;">We will now describe each of these three ingredients that make up the final payout.</p>
+<p style="margin-left:0px;"><strong>1) Endowment&nbsp;</strong></p>
+<p style="margin-left:0px;">Each participant's endowment is {{ C.ENDOWMENT }} tokens.&nbsp;</p>
+<p style="margin-left:0px;"><strong>2) Bidding cost</strong></p>
+<p style="margin-left:0px;">Each participant will be assigned a <strong>cost-per-bid, </strong>which will be either {{ C.COST_LOW }} token or&nbsp; {{ C.COST_HIGH }} tokens, with equal probability.&nbsp;</p>
+<p style="margin-left:0px;">Participants will not be informed about the cost-per-bids assigned to other participants.</p>
+<p style="margin-left:0px;">If a participant is assigned a&nbsp;cost-per-bid&nbsp;of&nbsp;{{C.COST_LOW}} token, and he bids {{ C.SAMPLE_BID }}, the bidding cost will be {{ C.SAMPLE_BIDDING_COST_LOW }} tokens.&nbsp;</p>
+<p style="margin-left:0px;">And if a participant is assigned a cost-per-bid of {{ C.COST_HIGH }} tokens,&nbsp;and he bids {{ C.SAMPLE_BID }}, the bidding cost will be&nbsp;{{ C.SAMPLE_BIDDING_COST_HIGH}} tokens.</p>
+<p style="margin-left:0px;"><strong>3) Prize won</strong><br>Each participant's<strong>&nbsp;prize won </strong>(in tokens)<strong> </strong>will be determined by his bid and the bid(s) of his opponent(s) in the contest. The exact details about how bids determine prizes will be described later.</p>
+<p style="margin-left:0px;">Participants will now be required to complete a comprehension task to be able to participate in the experiment.</p>
+
+<form method="post">
+	<button type="submit">Continue</button>
+</form>
+
+
+{% endblock %}
