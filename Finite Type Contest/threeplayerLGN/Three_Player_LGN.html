@@ -1,0 +1,74 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+
+<b>Contest 3<br></b><br>
+Here are the details of this contest.<br><br>
+<b>No. of participants:</b> 3 (including you)&nbsp;<br>
+<b>1st prize:</b>&nbsp; {{ C.THREE_PLAYER_LGN_PRIZE_1 }} tokens&nbsp;<br>
+<b>2nd prize:</b>&nbsp; {{ C.THREE_PLAYER_LGN_PRIZE_2 }} tokens&nbsp;<br>
+<b>3rd prize</b>: 0 tokens&nbsp;<br>
+<b>Rules:</b>&nbsp;
+<ul>
+ <li>The participant with the highest bid wins the 1st prize.&nbsp;</li>
+ <li>The participant with the second-highest bid wins the 2nd prize.&nbsp;</li>
+ <li>Ties are broken randomly.&nbsp;</li>
+</ul>
+<b>Reminder:</b>
+
+<ul>
+ <li>You pay your bidding cost of {{ participant.COST }}*(your bid) tokens irrespective of your prize.</li>
+ <li>Your prize won may be {{ C.THREE_PLAYER_LGN_PRIZE_1 }} tokens or 0 tokens, depending on whether your bid is one of the highest bid or not.</li>
+ <li>Your opponents' cost-per-bid may be&nbsp;{{ C.COST_LOW }} or&nbsp;{{ C.COST_HIGH }} with equal probability.</li>
+</ul>
+<br>
+Please choose your bid for this contest in the slider below.
+
+<p>Move the slider to decide how much to give.</p>
+
+<style>.slider-long {
+    width: 100%; /* Adjust the width as necessary */
+} </style>
+
+<input type="range" name="bid" min="0" max="100" step="0.1" oninput="updateDescription(this)" class="slider-long">
+
+<p id="description"></p>
+<!-- by leaving the description blank initially, we prompt the user to move the slider,
+reducing the anchoring/default effect. -->
+
+<script>
+    let description = document.getElementById('description');
+    function updateDescription(input) {
+        let bid = parseFloat(input.value);
+        let bidding_cost = bid * {{ participant.COST }};
+        // Note: The prize is the same for both winners in this code. Let me know if you'd like to have different prizes and I'll change the code such that there are two different winnings commands for both winners.
+        let winnings = {{ C.THREE_PLAYER_LGN_PRIZE_1 }} - bidding_cost + {{ C.ENDOWMENT }};
+        let payout_if_lost = {{ C.ENDOWMENT }} - bidding_cost; 
+
+        if (bid > 0 && bid < 100) {
+            description.innerHTML = `Bid ${bid} tokens. Your bidding cost is ${bidding_cost.toFixed(1)} tokens. <br>
+            If at least one of your opponents' bids is less than ${bid.toFixed(1)}, you win the prize of {{ C.THREE_PLAYER_LGN_PRIZE_1 }} and your payout for this round is ${winnings.toFixed(1)} tokens. <br>
+            If both of your opponents' bids are more than ${bid.toFixed(1)}, you lose the prize and your payout for this round is ${payout_if_lost.toFixed(1)} tokens.`;
+        } 
+
+        else if (bid == 0) {
+            description.innerHTML = `Bid ${bid.toFixed(1)} tokens. Your bidding cost is ${bidding_cost.toFixed(1)} tokens. <br>
+            If both of your opponents' bids are more than ${bid.toFixed(1)}, you lose the prize and your payout for this round is ${payout_if_lost.toFixed(1)} tokens.`;
+        } 
+
+        else {
+            description.innerHTML = `Bid ${bid.toFixed(1)} tokens. Your bidding cost is ${bidding_cost.toFixed(1)} tokens. <br>
+            If at least one of your opponents' bid is less than ${bid.toFixed(1)}, you win the prize of {{C.THREE_PLAYER_LGN_PRIZE_1 }} and your payout for this round is ${winnings.toFixed(1)} tokens.`;
+        }   
+    }
+</script>
+
+
+
+
+
+<form method="post">
+    <button type="submit">Continue</button>
+</form>
+
+{% endblock %}

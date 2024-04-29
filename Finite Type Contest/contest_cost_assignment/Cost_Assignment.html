@@ -1,0 +1,25 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+<b>Three contests and your cost-per-bid assignment</b><br>
+<br>
+You have been assigned a&nbsp;<b>cost-per-bid of {{ player.COST }} tokens</b>. You will be asked to submit bids for three different contests. The contests will differ in the number of participants and the values of the prizes.&nbsp;Your cost-per-bid will remain the same for all three contests.<br>
+<br>
+All other participants have been assigned a cost-per-bid of {{ C.COST_LOW }} token, or {{ C.COST_HIGH }} tokens, with equal probability. Participants will only be informed about their own cost-per-bid, and not about the cost-per-bid of their opponents.<br>
+<br>
+After the experiment, the final payout for each participant will be determined as follows.
+<ol>
+ <li>One of the three contests will be randomly chosen.</li>
+ <li>The participant's opponent(s) for this contest will be randomly chosen.</li>
+ <li>Given the contest in Step 1, the opponent(s) in Step 2, we will use the participants bids to determine the final payout.</li>
+</ol>
+
+
+
+
+
+<form method="post">
+	<button type="submit">Continue</button>
+</form>
+
+{% endblock %}
