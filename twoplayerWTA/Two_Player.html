@@ -1,0 +1,71 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+
+<b>Contest 1<br></b><br>
+Here are the details of this contest.<br><br>
+<b>No. of participants:</b> 2 (including you)&nbsp;<br>
+<b>1st prize:</b>&nbsp; {{ C.TWO_PLAYER_PRIZE }} tokens&nbsp;<br>
+<b>2nd prize</b>: 0 tokens&nbsp;<br>
+<b>Rules:</b>&nbsp;
+<ul>
+ <li>The participant with the highest bid wins the 1st prize.&nbsp;</li>
+ <li>The participant with the smallest bid wins the 2nd prize.&nbsp;</li>
+ <li>Ties are broken randomly.&nbsp;</li>
+</ul>
+<b>Reminder:</b>
+
+<ul>
+ <li>You pay your bidding cost of {{ participant.COST }}*(your bid) tokens irrespective of your prize.</li>
+ <li>Your prize won may be {{ C.TWO_PLAYER_PRIZE }} tokens or 0 tokens, depending on whether your bid is the highest bid or not.</li>
+ <li>Your opponent's cost-per-bid may be&nbsp;{{ C.COST_LOW }} or&nbsp;{{ C.COST_HIGH }} with equal probability.</li>
+</ul>
+<br>
+Please choose your bid for this contest in the slider below.
+
+<p>Move the slider to decide how much to give.</p>
+
+<style>.slider-long {
+    width: 100%; /* Adjust the width as necessary */
+} </style>
+
+<input type="range" name="bid" min="0" max="100" step="0.1" oninput="updateDescription(this)" class="slider-long">
+
+<p id="description"></p>
+<!-- by leaving the description blank initially, we prompt the user to move the slider,
+reducing the anchoring/default effect. -->
+
+<script>
+    let description = document.getElementById('description');
+    function updateDescription(input) {
+        let bid = parseFloat(input.value);
+        let bidding_cost = bid * {{ participant.COST }};
+        let winnings = {{ C.TWO_PLAYER_PRIZE }} - bidding_cost + {{ C.ENDOWMENT }};
+        let payout_if_lost = {{ C.ENDOWMENT }} - bidding_cost; 
+
+        if (bid > 0 && bid < 100) {
+            description.innerHTML = `Bid ${bid} tokens. Your bidding cost is ${bidding_cost.toFixed(1)} tokens. <br>
+            If your opponent's bid is less than ${bid.toFixed(1)}, you win the prize of {{C.TWO_PLAYER_PRIZE }} and your payout for this round is ${winnings.toFixed(1)} tokens. <br>
+            If your opponent's bid is more than ${bid.toFixed(1)}, you lose the prize and your payout for this round is ${payout_if_lost.toFixed(1)} tokens.`;
+        } 
+
+        else if (bid == 0) {
+            description.innerHTML = `Bid ${bid.toFixed(1)} tokens. Your bidding cost is ${bidding_cost.toFixed(1)} tokens. <br>
+            If your opponent's bid is more than ${bid.toFixed(1)}, you lose the prize and your payout for this round is ${payout_if_lost.toFixed(1)} tokens.`;
+        } 
+
+        else {
+            description.innerHTML = `Bid ${bid.toFixed(1)} tokens. Your bidding cost is ${bidding_cost.toFixed(1)} tokens. <br>
+            If your opponent's bid is less than ${bid.toFixed(1)}, you win the prize of {{C.TWO_PLAYER_PRIZE }} and your payout for this round is ${winnings.toFixed(1)} tokens.`;
+        }   
+    }
+</script>
+
+
+
+
+<form method="post">
+    <button type="submit">Continue</button>
+</form>
+
+{% endblock %}
